@@ -1,0 +1,36 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: prueba_tecnica_gala_db
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "GalaDb@2025"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    # ‼️ NO hace falta montar el script aquí
+    # —lo montará el init‑container—
+    # volumes:
+    #   - ./scripts:/docker-entrypoint-initdb.d
+
+  db_seed:
+    image: mcr.microsoft.com/mssql-tools     # trae sqlcmd
+    depends_on:
+      sqlserver:
+        condition: service_started           # espera a que el contenedor exista
+    network_mode: "service:sqlserver"        # comparte red con sqlserver (localhost)
+    volumes:
+      - ./scripts:/scripts                   # aquí está init.sql
+    environment:
+      SA_PASSWORD: "GalaDb@2025"
+    entrypoint: >
+      /bin/bash -c "
+      echo '⏳ Esperando a SQL Server…';
+      for i in {1..30}; do
+        /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P \"$${SA_PASSWORD}\" -Q 'SELECT 1' && break
+        sleep 2
+      done;
+      echo '▶ Ejecutando /scripts/init.sql';
+      /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P \"$${SA_PASSWORD}\" -d master -i /scripts/init.sql;
+      echo '✅ Script terminado';
+      "
