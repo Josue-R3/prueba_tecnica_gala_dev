@@ -1,0 +1,53 @@
+Prueba Técnica - Desarrollador 
+Descripción General
+Desarrollar un sistema básico de gestión de empleados para una tienda. El foco principal es evaluar el backend en C# (.NET), sin embargo, se requiere también la creación de un frontend funcional en Angular 19+ para demostrar habilidades full stack. Python puede ser utilizado solo como complemento o herramienta secundaria si el candidato desea.
+Funcionalidades Requeridas
+- CRUD de empleados: Id, Nombre, Apellido, Correo, Cargo, Fecha de ingreso, Estado (Activo/Inactivo)
+- CRUD de tiendas: Id, Nombre, Dirección, Estado (Activa/Inactiva)
+Requisitos Técnicos Backend (.NET - C#)
+- API RESTful usando .NET 6 o superior (preferible .NET 8)
+- Arquitectura modular o desacoplada (Domain, Application, Infrastructure, API)
+- Base de datos SQL Server con Entity Framework Core
+- Manejo básico de excepciones y validaciones
+- Uso de DTOs y mapeo (AutoMapper o similar)
+- Repository Pattern y buenas prácticas de separación de responsabilidades
+•	Opcionales:
+•	- Autenticación JWT básica
+•	- Pruebas unitarias simples
+•	- Implementación de endpoints adicionales en Python (opcional)
+Requisitos Técnicos Frontend (Angular 19+)
+•	Funcionalidad mínima:
+•	- CRUD de empleados, utilizar formularios reactivos con validaciones, de ser posible utilizar comunicación entre componentes
+•	- Listado de empleados con opción de editar o eliminar
+•	- Consumo del backend con HttpClient 
+•	- Evitar duplicar código en las peticiones (Interceptor)
+•	- Manejo de errores centralizado en los servicios
+•	- Creacion de DTOs
+•	- Manejo de guards
+•	Requisitos técnicos adicionales:
+•	- Angular CLI
+•	- Buen manejo de componentes y servicios (en caso de ser necesario utilizar pipes)
+•	- Mínima organización del proyecto (por módulos o carpetas limpias)
+•	- Implementar un buscador en el listado de empleados (por nombre o correo)
+•	- Implementar paginación en el listado de empleados
+•	- Mostrar mensajes de éxito y error con un servicio de notificaciones
+Documentación Mínima
+- README con instrucciones para correr el backend y frontend
+- Diagrama simple de arquitectura (opcional)
+- Mención de librerías y decisiones técnicas
+Entregables
+- Repositorio privado en GitHub o GitLab
+- Código fuente del backend y frontend en carpetas separadas
+- Backup o script SQL de la base de datos (opcional)
+Tiempo de Entrega
+24 horas desde la asignación de la prueba.
+Criterios de Evaluación
+Criterio	Peso
+Cumplimiento de requisitos funcionales (CRUD completo)	25%
+Calidad del código backend en C# (.NET)	25%
+Desacoplamiento y arquitectura por capas en backend	15%
+Frontend funcional en Angular 19+ (formularios, búsqueda, paginación)	15%
+Control de versiones y commits claros en Git	10%
+Documentación mínima	5%
+Opcionales (JWT, pruebas unitarias, endpoints Python)	5%
+
