@@ -1,0 +1,543 @@
+<div class="dashboard-container">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="header-left">
+        <h1>Sistema de Gestión de Tiendas</h1>
+        <p>Bienvenido, {{ getCurrentUserDisplayName() }} - {{ currentUser()?.rol?.nombre || 'Sin rol' }}</p>
+      </div>
+      <div class="header-right">
+        <button class="logout-button" (click)="showLogoutConfirm.set(true)">
+          <fa-icon [icon]="faSignOutAlt"></fa-icon>
+          Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Estadísticas -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">Tiendas Activas</span>
+          <fa-icon class="stat-icon" [icon]="faStore"></fa-icon>
+        </div>
+        <div class="stat-value">{{ estadisticas().totalTiendas }}</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">Empleados Activos</span>
+          <fa-icon class="stat-icon" [icon]="faUsers"></fa-icon>
+        </div>
+        <div class="stat-value">{{ estadisticas().totalEmpleados }}</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">Usuarios Activos</span>
+          <fa-icon class="stat-icon" [icon]="faUserPlus"></fa-icon>
+        </div>
+        <div class="stat-value">{{ estadisticas().totalUsuarios }}</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">Roles del Sistema</span>
+          <fa-icon class="stat-icon" [icon]="faShieldAlt"></fa-icon>
+        </div>
+        <div class="stat-value">{{ estadisticas().totalRoles }}</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs-container">
+      <div class="tabs-list">
+        <button 
+          class="tab-button" 
+          [class.active]="activeTab() === 'tiendas'"
+          (click)="setActiveTab('tiendas')"
+        >
+          Tiendas
+        </button>
+        <button 
+          class="tab-button" 
+          [class.active]="activeTab() === 'empleados'"
+          (click)="setActiveTab('empleados')"
+        >
+          Empleados
+        </button>
+        <button 
+          class="tab-button" 
+          [class.active]="activeTab() === 'usuarios'"
+          (click)="setActiveTab('usuarios')"
+        >
+          Usuarios
+        </button>
+        <button 
+          class="tab-button" 
+          [class.active]="activeTab() === 'roles'"
+          (click)="setActiveTab('roles')"
+        >
+          Roles
+        </button>
+      </div>
+
+      <!-- Tab Content: Tiendas -->
+      <div *ngIf="activeTab() === 'tiendas'" class="tab-content">
+        <div class="content-card">
+          <div class="card-header">
+            <div>
+              <h2>Gestión de Tiendas</h2>
+              <p>Administra todas las tiendas de la empresa</p>
+            </div>
+            <button 
+              *ngIf="canManage('tiendas')" 
+              class="add-button"
+              (click)="isTiendaModalOpen.set(true)"
+            >
+              <fa-icon [icon]="faPlus"></fa-icon>
+              Agregar Tienda
+            </button>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Dirección</th>
+                  <th>Estado</th>
+                  <th>Empleados</th>
+                  <th *ngIf="canManage('tiendas')">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let tienda of getActiveTiendas()">
+                  <td>{{ tienda.id }}</td>
+                  <td>{{ tienda.nombre }}</td>
+                  <td>{{ tienda.direccion }}</td>
+                  <td>
+                    <span class="status-badge active">Activo</span>
+                  </td>
+                  <td>{{ getEmpleadosCountByTienda(tienda.id) }}</td>
+                  <td *ngIf="canManage('tiendas')">
+                    <button class="action-button delete" (click)="handleDeleteTienda(tienda.id)">
+                      <fa-icon [icon]="faTrash"></fa-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content: Empleados -->
+      <div *ngIf="activeTab() === 'empleados'" class="tab-content">
+        <div class="content-card">
+          <div class="card-header">
+            <div>
+              <h2>Gestión de Empleados</h2>
+              <p>Administra todos los empleados de la empresa</p>
+            </div>
+            <button 
+              *ngIf="canManage('empleados')" 
+              class="add-button"
+              (click)="isEmpleadoModalOpen.set(true)"
+            >
+              <fa-icon [icon]="faPlus"></fa-icon>
+              Agregar Empleado
+            </button>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre Completo</th>
+                  <th>Correo</th>
+                  <th>Cargo</th>
+                  <th>Tienda</th>
+                  <th>Fecha Ingreso</th>
+                  <th>Estado</th>
+                  <th *ngIf="canManage('empleados')">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let empleado of getActiveEmpleados()">
+                  <td>{{ empleado.id }}</td>
+                  <td>{{ empleado.nombre }} {{ empleado.apellido }}</td>
+                  <td>{{ empleado.correo }}</td>
+                  <td>{{ empleado.cargo }}</td>
+                  <td>{{ getTiendaNombre(empleado.tiendaId) }}</td>
+                  <td>{{ empleado.fechaIngreso }}</td>
+                  <td>
+                    <span class="status-badge active">Activo</span>
+                  </td>
+                  <td *ngIf="canManage('empleados')">
+                    <button class="action-button delete" (click)="handleDeleteEmpleado(empleado.id)">
+                      <fa-icon [icon]="faTrash"></fa-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content: Usuarios -->
+      <div *ngIf="activeTab() === 'usuarios'" class="tab-content">
+        <div class="content-card">
+          <div class="card-header">
+            <div>
+              <h2>Gestión de Usuarios</h2>
+              <p>Administra los usuarios del sistema</p>
+            </div>
+            <button 
+              *ngIf="canManage('usuarios')" 
+              class="add-button"
+              (click)="isUsuarioModalOpen.set(true)"
+            >
+              <fa-icon [icon]="faPlus"></fa-icon>
+              Agregar Usuario
+            </button>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Usuario</th>
+                  <th>Empleado</th>
+                  <th>Rol</th>
+                  <th>Estado</th>
+                  <th>Fecha Creado</th>
+                  <th *ngIf="canManage('usuarios')">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let usuario of getActiveUsuarios()">
+                  <td>{{ usuario.id }}</td>
+                  <td>{{ usuario.usuario }}</td>
+                  <td>{{ getEmpleadoNombre(usuario.empleadoId) }}</td>
+                  <td>{{ getRolNombre(usuario.rolId) }}</td>
+                  <td>
+                    <span class="status-badge active">Activo</span>
+                  </td>
+                  <td>{{ usuario.fechaCreado }}</td>
+                  <td *ngIf="canManage('usuarios')">
+                    <button class="action-button delete" (click)="handleDeleteUsuario(usuario.id)">
+                      <fa-icon [icon]="faTrash"></fa-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content: Roles -->
+      <div *ngIf="activeTab() === 'roles'" class="tab-content">
+        <div class="content-card">
+          <div class="card-header">
+            <div>
+              <h2>Gestión de Roles</h2>
+              <p>Administra los roles del sistema</p>
+            </div>
+            <button 
+              *ngIf="canManage('roles')" 
+              class="add-button"
+              (click)="isRoleModalOpen.set(true)"
+            >
+              <fa-icon [icon]="faPlus"></fa-icon>
+              Agregar Rol
+            </button>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Usuarios Asignados</th>
+                  <th *ngIf="canManage('roles')">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let role of roles()">
+                  <td>{{ role.id }}</td>
+                  <td>{{ role.nombre }}</td>
+                  <td>{{ getUsuariosCountByRole(role.id) }}</td>
+                  <td *ngIf="canManage('roles')">
+                    <span class="no-action">-</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para agregar Tienda -->
+<div *ngIf="isTiendaModalOpen()" class="modal-overlay" (click)="isTiendaModalOpen.set(false)">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Agregar Nueva Tienda</h3>
+      <button class="modal-close" (click)="isTiendaModalOpen.set(false)">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+    </div>
+    <form (ngSubmit)="handleAddTienda()" #tiendaForm="ngForm">
+      <div class="form-group">
+        <label for="tiendaNombre">Nombre</label>
+        <input
+          id="tiendaNombre"
+          type="text"
+          [(ngModel)]="newTienda().nombre"
+          (ngModelChange)="updateTiendaNombre($event)"
+          name="tiendaNombre"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="tiendaDireccion">Dirección</label>
+        <input
+          id="tiendaDireccion"
+          type="text"
+          [(ngModel)]="newTienda().direccion"
+          (ngModelChange)="updateTiendaDireccion($event)"
+          name="tiendaDireccion"
+          required
+        />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="button secondary" (click)="isTiendaModalOpen.set(false)">
+          Cancelar
+        </button>
+        <button type="submit" class="button primary" [disabled]="tiendaForm.invalid">
+          Agregar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal para agregar Empleado -->
+<div *ngIf="isEmpleadoModalOpen()" class="modal-overlay" (click)="isEmpleadoModalOpen.set(false)">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Agregar Nuevo Empleado</h3>
+      <button class="modal-close" (click)="isEmpleadoModalOpen.set(false)">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+    </div>
+    <form (ngSubmit)="handleAddEmpleado()" #empleadoForm="ngForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="empleadoNombre">Nombre</label>
+          <input
+            id="empleadoNombre"
+            type="text"
+            [(ngModel)]="newEmpleado().nombre"
+            (ngModelChange)="updateEmpleadoNombre($event)"
+            name="empleadoNombre"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="empleadoApellido">Apellido</label>
+          <input
+            id="empleadoApellido"
+            type="text"
+            [(ngModel)]="newEmpleado().apellido"
+            (ngModelChange)="updateEmpleadoApellido($event)"
+            name="empleadoApellido"
+            required
+          />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="empleadoCorreo">Correo</label>
+        <input
+          id="empleadoCorreo"
+          type="email"
+          [(ngModel)]="newEmpleado().correo"
+          (ngModelChange)="updateEmpleadoCorreo($event)"
+          name="empleadoCorreo"
+          required
+        />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="empleadoCargo">Cargo</label>
+          <input
+            id="empleadoCargo"
+            type="text"
+            [(ngModel)]="newEmpleado().cargo"
+            (ngModelChange)="updateEmpleadoCargo($event)"
+            name="empleadoCargo"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="empleadoTienda">Tienda</label>
+          <select
+            id="empleadoTienda"
+            [(ngModel)]="newEmpleado().tiendaId"
+            (ngModelChange)="updateEmpleadoTienda($event)"
+            name="empleadoTienda"
+            required
+          >
+            <option value="0">Seleccionar tienda</option>
+            <option *ngFor="let tienda of getActiveTiendasForSelect()" [value]="tienda.id">
+              {{ tienda.nombre }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="button secondary" (click)="isEmpleadoModalOpen.set(false)">
+          Cancelar
+        </button>
+        <button type="submit" class="button primary" [disabled]="empleadoForm.invalid">
+          Agregar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal para agregar Usuario -->
+<div *ngIf="isUsuarioModalOpen()" class="modal-overlay" (click)="isUsuarioModalOpen.set(false)">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Agregar Nuevo Usuario</h3>
+      <button class="modal-close" (click)="isUsuarioModalOpen.set(false)">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+    </div>
+    <form (ngSubmit)="handleAddUsuario()" #usuarioForm="ngForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="usuarioNombre">Usuario</label>
+          <input
+            id="usuarioNombre"
+            type="text"
+            [(ngModel)]="newUsuario().usuario"
+            (ngModelChange)="updateUsuarioNombre($event)"
+            name="usuarioNombre"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="usuarioContrasenia">Contraseña</label>
+          <input
+            id="usuarioContrasenia"
+            type="password"
+            [(ngModel)]="newUsuario().contrasenia"
+            (ngModelChange)="updateUsuarioContrasenia($event)"
+            name="usuarioContrasenia"
+            required
+          />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="usuarioRol">Rol</label>
+          <select
+            id="usuarioRol"
+            [(ngModel)]="newUsuario().rolId"
+            (ngModelChange)="updateUsuarioRol($event)"
+            name="usuarioRol"
+            required
+          >
+            <option *ngFor="let role of roles()" [value]="role.id">
+              {{ role.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="usuarioEmpleado">Empleado (Opcional)</label>
+          <select
+            id="usuarioEmpleado"
+            [(ngModel)]="newUsuario().empleadoId"
+            (ngModelChange)="updateUsuarioEmpleado($event)"
+            name="usuarioEmpleado"
+          >
+            <option [value]="null">Sin empleado</option>
+            <option *ngFor="let empleado of getActiveEmpleadosForSelect()" [value]="empleado.id">
+              {{ empleado.nombre }} {{ empleado.apellido }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="button secondary" (click)="isUsuarioModalOpen.set(false)">
+          Cancelar
+        </button>
+        <button type="submit" class="button primary" [disabled]="usuarioForm.invalid">
+          Agregar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal para agregar Rol -->
+<div *ngIf="isRoleModalOpen()" class="modal-overlay" (click)="isRoleModalOpen.set(false)">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Agregar Nuevo Rol</h3>
+      <button class="modal-close" (click)="isRoleModalOpen.set(false)">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+    </div>
+    <form (ngSubmit)="handleAddRole()" #roleForm="ngForm">
+      <div class="form-group">
+        <label for="roleNombre">Nombre del Rol</label>
+        <input
+          id="roleNombre"
+          type="text"
+          [(ngModel)]="newRole().nombre"
+          (ngModelChange)="updateRoleNombre($event)"
+          name="roleNombre"
+          required
+        />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="button secondary" (click)="isRoleModalOpen.set(false)">
+          Cancelar
+        </button>
+        <button type="submit" class="button primary" [disabled]="roleForm.invalid">
+          Agregar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal de confirmación de logout -->
+<div *ngIf="showLogoutConfirm()" class="modal-overlay" (click)="showLogoutConfirm.set(false)">
+  <div class="modal-content small" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Confirmar Cierre de Sesión</h3>
+    </div>
+    <p>¿Estás seguro de que quieres cerrar sesión?</p>
+    <div class="modal-footer">
+      <button type="button" class="button secondary" (click)="showLogoutConfirm.set(false)">
+        Cancelar
+      </button>
+      <button type="button" class="button primary" (click)="handleLogout()">
+        Cerrar Sesión
+      </button>
+    </div>
+  </div>
+</div>

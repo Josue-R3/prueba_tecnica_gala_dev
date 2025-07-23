@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Web.API\\Web.API.csproj": {}
+    "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Web.API\\Web.API.csproj": {}
   },
   "projects": {
-    "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Application\\Application.csproj": {
+    "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Application\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Application\\Application.csproj",
+        "projectUniqueName": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Application\\Application.csproj",
         "projectName": "Application",
-        "projectPath": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Application\\Application.csproj",
-        "packagesPath": "C:\\Users\\Josue\\.nuget\\packages\\",
-        "outputPath": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Application\\obj\\",
+        "projectPath": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Application\\Application.csproj",
+        "packagesPath": "C:\\Users\\JOSUERICARDORUIZROSA\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Josue\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\JOSUERICARDORUIZROSA\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -33,8 +33,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj": {
-                "projectPath": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj"
+              "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj"
               }
             }
           }
@@ -48,7 +48,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -69,24 +70,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj": {
+    "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj",
-        "packagesPath": "C:\\Users\\Josue\\.nuget\\packages\\",
-        "outputPath": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\obj\\",
+        "projectPath": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\JOSUERICARDORUIZROSA\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Josue\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\JOSUERICARDORUIZROSA\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -113,7 +114,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -134,24 +136,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Infraestructure\\Infraestructure.csproj": {
+    "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Infraestructure\\Infraestructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Infraestructure\\Infraestructure.csproj",
+        "projectUniqueName": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Infraestructure\\Infraestructure.csproj",
         "projectName": "Infraestructure",
-        "projectPath": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Infraestructure\\Infraestructure.csproj",
-        "packagesPath": "C:\\Users\\Josue\\.nuget\\packages\\",
-        "outputPath": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Infraestructure\\obj\\",
+        "projectPath": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Infraestructure\\Infraestructure.csproj",
+        "packagesPath": "C:\\Users\\JOSUERICARDORUIZROSA\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Infraestructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Josue\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\JOSUERICARDORUIZROSA\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -167,11 +169,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Application\\Application.csproj": {
-                "projectPath": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Application\\Application.csproj"
+              "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Application\\Application.csproj": {
+                "projectPath": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Application\\Application.csproj"
               },
-              "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj": {
-                "projectPath": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj"
+              "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj"
               }
             }
           }
@@ -185,7 +187,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -206,24 +209,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Web.API\\Web.API.csproj": {
+    "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Web.API\\Web.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Web.API\\Web.API.csproj",
+        "projectUniqueName": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Web.API\\Web.API.csproj",
         "projectName": "Web.API",
-        "projectPath": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Web.API\\Web.API.csproj",
-        "packagesPath": "C:\\Users\\Josue\\.nuget\\packages\\",
-        "outputPath": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Web.API\\obj\\",
+        "projectPath": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Web.API\\Web.API.csproj",
+        "packagesPath": "C:\\Users\\JOSUERICARDORUIZROSA\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Web.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Josue\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\JOSUERICARDORUIZROSA\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -239,11 +242,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Application\\Application.csproj": {
-                "projectPath": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Application\\Application.csproj"
+              "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Application\\Application.csproj": {
+                "projectPath": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Application\\Application.csproj"
               },
-              "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Infraestructure\\Infraestructure.csproj": {
-                "projectPath": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Infraestructure\\Infraestructure.csproj"
+              "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Infraestructure\\Infraestructure.csproj": {
+                "projectPath": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Infraestructure\\Infraestructure.csproj"
               }
             }
           }
@@ -257,7 +260,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -291,7 +295,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj": {}
+    "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj": {}
   },
   "projects": {
-    "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj": {
+    "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj",
-        "packagesPath": "C:\\Users\\Josue\\.nuget\\packages\\",
-        "outputPath": "D:\\JOSUE DATOS\\Documentos\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\obj\\",
+        "projectPath": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\JOSUERICARDORUIZROSA\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\JOSUERICARDORUIZROSA\\Documents\\GitHub\\prueba_tecnica_gala_dev\\backend\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Josue\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\JOSUERICARDORUIZROSA\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,7 +44,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -65,7 +66,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

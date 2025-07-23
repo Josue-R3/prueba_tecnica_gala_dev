@@ -22,3 +22,15 @@ D:\JOSUE DATOS\Documentos\GitHub\prueba_tecnica_gala_dev\backend\Domain\obj\Debu
 D:\JOSUE DATOS\Documentos\GitHub\prueba_tecnica_gala_dev\backend\Domain\obj\Debug\net8.0\refint\Domain.dll
 D:\JOSUE DATOS\Documentos\GitHub\prueba_tecnica_gala_dev\backend\Domain\obj\Debug\net8.0\Domain.pdb
 D:\JOSUE DATOS\Documentos\GitHub\prueba_tecnica_gala_dev\backend\Domain\obj\Debug\net8.0\ref\Domain.dll
+C:\Users\JOSUERICARDORUIZROSA\Documents\GitHub\prueba_tecnica_gala_dev\backend\Domain\bin\Debug\net8.0\Domain.deps.json
+C:\Users\JOSUERICARDORUIZROSA\Documents\GitHub\prueba_tecnica_gala_dev\backend\Domain\bin\Debug\net8.0\Domain.dll
+C:\Users\JOSUERICARDORUIZROSA\Documents\GitHub\prueba_tecnica_gala_dev\backend\Domain\bin\Debug\net8.0\Domain.pdb
+C:\Users\JOSUERICARDORUIZROSA\Documents\GitHub\prueba_tecnica_gala_dev\backend\Domain\obj\Debug\net8.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\JOSUERICARDORUIZROSA\Documents\GitHub\prueba_tecnica_gala_dev\backend\Domain\obj\Debug\net8.0\Domain.AssemblyInfoInputs.cache
+C:\Users\JOSUERICARDORUIZROSA\Documents\GitHub\prueba_tecnica_gala_dev\backend\Domain\obj\Debug\net8.0\Domain.AssemblyInfo.cs
+C:\Users\JOSUERICARDORUIZROSA\Documents\GitHub\prueba_tecnica_gala_dev\backend\Domain\obj\Debug\net8.0\Domain.csproj.CoreCompileInputs.cache
+C:\Users\JOSUERICARDORUIZROSA\Documents\GitHub\prueba_tecnica_gala_dev\backend\Domain\obj\Debug\net8.0\Domain.sourcelink.json
+C:\Users\JOSUERICARDORUIZROSA\Documents\GitHub\prueba_tecnica_gala_dev\backend\Domain\obj\Debug\net8.0\Domain.dll
+C:\Users\JOSUERICARDORUIZROSA\Documents\GitHub\prueba_tecnica_gala_dev\backend\Domain\obj\Debug\net8.0\refint\Domain.dll
+C:\Users\JOSUERICARDORUIZROSA\Documents\GitHub\prueba_tecnica_gala_dev\backend\Domain\obj\Debug\net8.0\Domain.pdb
+C:\Users\JOSUERICARDORUIZROSA\Documents\GitHub\prueba_tecnica_gala_dev\backend\Domain\obj\Debug\net8.0\ref\Domain.dll
