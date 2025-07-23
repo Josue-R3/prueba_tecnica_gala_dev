@@ -31,12 +31,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
+  margin: 0.5rem auto;
 }
 
 .user-icon {
-  width: 2rem;
-  height: 2rem;
+  font-size: 2rem;
   color: white;
 }
 
@@ -44,12 +43,10 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: #111827;
-  margin: 0;
 }
 
 .login-header p {
   color: #6b7280;
-  margin: 0;
 }
 
 /* Card */
@@ -105,8 +102,7 @@
 .input-icon {
   position: absolute;
   left: 0.75rem;
-  width: 1rem;
-  height: 1rem;
+  font-size: 1rem;
   color: #9ca3af;
   z-index: 1;
 }
@@ -145,13 +141,12 @@
   z-index: 1;
 }
 
-.toggle-password svg {
-  width: 1rem;
-  height: 1rem;
+.toggle-password fa-icon {
+  font-size: 1rem;
   color: #9ca3af;
 }
 
-.toggle-password:hover svg {
+.toggle-password:hover fa-icon {
   color: #6b7280;
 }
 
@@ -212,8 +207,7 @@
 }
 
 .zap-icon {
-  width: 1rem;
-  height: 1rem;
+  font-size: 1rem;
 }
 
 .test-buttons {

@@ -1,0 +1,116 @@
+<div class="login-container">
+  <div class="login-content">
+    <!-- Formulario de Login -->
+    <div class="login-card">
+        <!-- Logo/Header -->
+        <div class="login-header">
+            <div class="logo">
+                <fa-icon [icon]="faUser" class="user-icon"></fa-icon>
+            </div>
+            <h1>Sistema de Gestión</h1>
+            <p>Empleados y Tiendas</p>
+        </div>
+      <div class="card-content">
+        <form (ngSubmit)="handleSubmit()" #loginForm="ngForm">
+          <div class="form-group">
+            <label for="usuario">Usuario</label>
+            <div class="input-container">
+              <fa-icon [icon]="faUser" class="input-icon"></fa-icon>
+              <input
+                id="usuario"
+                type="text"
+                placeholder="Ingresa tu usuario"
+                [(ngModel)]="credentials().usuario"
+                name="usuario"
+                required
+                [disabled]="isLoading()"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="contrasenia">Contraseña</label>
+            <div class="input-container">
+              <fa-icon [icon]="faLock" class="input-icon"></fa-icon>
+              <input
+                id="contrasenia"
+                [type]="showPassword() ? 'text' : 'password'"
+                placeholder="Ingresa tu contraseña"
+                [(ngModel)]="credentials().contrasenia"
+                name="contrasenia"
+                required
+                [disabled]="isLoading()"
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                (click)="togglePasswordVisibility()"
+                [disabled]="isLoading()"
+              >
+                <fa-icon [icon]="showPassword() ? faEyeSlash : faEye"></fa-icon>
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="error()" class="error-alert">
+            {{ error() }}
+          </div>
+
+          <button
+            type="submit"
+            class="login-button"
+            [disabled]="isLoading() || loginForm.invalid"
+          >
+            {{ isLoading() ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
+          </button>
+        </form>
+
+        <!-- Credenciales de prueba -->
+        <div class="test-credentials">
+          <div class="test-header">
+            <fa-icon [icon]="faBolt" class="zap-icon"></fa-icon>
+            <span>Credenciales de prueba:</span>
+          </div>
+
+          <div class="test-buttons">
+            <button
+              type="button"
+              class="test-button"
+              (click)="setTestCredentials('admin')"
+              [disabled]="isLoading()"
+            >
+              <div class="test-button-content">
+                <div class="test-button-title">Administrador</div>
+                <div class="test-button-subtitle">admin / Admin123</div>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              class="test-button"
+              (click)="setTestCredentials('manager')"
+              [disabled]="isLoading()"
+            >
+              <div class="test-button-content">
+                <div class="test-button-title">Manager</div>
+                <div class="test-button-subtitle">manager / Manager123</div>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              class="test-button"
+              (click)="setTestCredentials('empleado')"
+              [disabled]="isLoading()"
+            >
+              <div class="test-button-content">
+                <div class="test-button-title">Empleado</div>
+                <div class="test-button-subtitle">ana.login / Ana123</div>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
