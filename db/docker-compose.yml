@@ -8,19 +8,17 @@ services:
       MSSQL_PID: "Developer"
     ports:
       - "1433:1433"
-    # ‼️ NO hace falta montar el script aquí
-    # —lo montará el init‑container—
     # volumes:
     #   - ./scripts:/docker-entrypoint-initdb.d
 
   db_seed:
-    image: mcr.microsoft.com/mssql-tools     # trae sqlcmd
+    image: mcr.microsoft.com/mssql-tools     # traer sqlcmd
     depends_on:
       sqlserver:
-        condition: service_started           # espera a que el contenedor exista
-    network_mode: "service:sqlserver"        # comparte red con sqlserver (localhost)
+        condition: service_started           # esperar a que el contenedor exista
+    network_mode: "service:sqlserver"        # compartir red con sqlserver (localhost)
     volumes:
-      - ./scripts:/scripts                   # aquí está init.sql
+      - ./scripts:/scripts                   # ejecución del script para la base de datos
     environment:
       SA_PASSWORD: "GalaDb@2025"
     entrypoint: >
