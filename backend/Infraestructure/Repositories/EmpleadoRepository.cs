@@ -86,11 +86,23 @@ public class EmpleadoRepository : Repository<Empleado>, IEmpleadoRepository
 
     public async Task<bool> ExistsByCorreoAsync(string correo, int? excludeId = null)
     {
-        var query = _dbSet.Where(e => e.Correo.ToLower() == correo.ToLower());
+        var query = _dbSet.Where(e => e.Correo.ToLower() == correo.ToLower() && e.Estado);
 
         if (excludeId.HasValue)
             query = query.Where(e => e.Id != excludeId.Value);
 
         return await query.AnyAsync();
+    }
+
+    public override async Task<bool> DeleteAsync(int id)
+    {
+        var empleado = await _dbSet.FirstOrDefaultAsync(e => e.Id == id);
+        if (empleado == null)
+            return false;
+
+        // Soft Delete: Cambiar estado a false
+        empleado.Estado = false;
+        _dbSet.Update(empleado);
+        return true;
     }
 }

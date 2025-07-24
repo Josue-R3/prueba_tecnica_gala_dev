@@ -1,6 +1,7 @@
 using Domain.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Infrastructure.Repositories;
 
@@ -22,7 +23,20 @@ public class Repository<T> : IRepository<T> where T : class
 
     public virtual async Task<IEnumerable<T>> GetAllAsync()
     {
-        return await _dbSet.ToListAsync();
+        // Filtrar solo registros activos (Estado = true)
+        var entityType = typeof(T);
+        var estadoProperty = entityType.GetProperty("Estado");
+
+        if (estadoProperty != null && estadoProperty.PropertyType == typeof(bool))
+        {
+            // Si la entidad tiene propiedad Estado, filtrar solo activos
+            return await _dbSet.Where(e => EF.Property<bool>(e, "Estado") == true).ToListAsync();
+        }
+        else
+        {
+            // Si no tiene Estado, devolver todos
+            return await _dbSet.ToListAsync();
+        }
     }
 
     public virtual async Task<T> AddAsync(T entity)
@@ -31,10 +45,10 @@ public class Repository<T> : IRepository<T> where T : class
         return entity;
     }
 
-    public virtual async Task<T> UpdateAsync(T entity)
+    public virtual Task<T> UpdateAsync(T entity)
     {
         _dbSet.Update(entity);
-        return entity;
+        return Task.FromResult(entity);
     }
 
     public virtual async Task<bool> DeleteAsync(int id)
@@ -43,12 +57,27 @@ public class Repository<T> : IRepository<T> where T : class
         if (entity == null)
             return false;
 
-        _dbSet.Remove(entity);
+        // Soft Delete: Cambiar estado a false en lugar de eliminación física
+        var entityType = typeof(T);
+        var estadoProperty = entityType.GetProperty("Estado");
+
+        if (estadoProperty != null && estadoProperty.PropertyType == typeof(bool))
+        {
+            // Si la entidad tiene propiedad Estado, hacer soft delete
+            estadoProperty.SetValue(entity, false);
+            _dbSet.Update(entity);
+        }
+        else
+        {
+            // Si no tiene Estado, eliminación física (fallback)
+            _dbSet.Remove(entity);
+        }
+
         return true;
     }
 
-    public virtual Task<bool> ExistsAsync(int id)
+    public virtual async Task<bool> ExistsAsync(int id)
     {
-        return Task.FromResult(_dbSet.Find(id) != null);
+        return await _dbSet.FindAsync(id) != null;
     }
 }
