@@ -20,6 +20,7 @@ public static class ServiceCollectionExtensions
         // Services
         services.AddScoped<IEmpleadoService, EmpleadoService>();
         services.AddScoped<ITiendaService, TiendaService>();
+        services.AddScoped<IAuthService, AuthService>();
 
         return services;
     }

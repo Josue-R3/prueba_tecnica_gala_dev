@@ -1,28 +1,23 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
+import { tap, catchError, map } from 'rxjs/operators';
+import { EmpleadoService } from './empleado.service';
+import { TiendaService } from './tienda.service';
+import { NotificationService } from './notification.service';
+import { ErrorHandlerService } from './error-handler.service';
+import {
+  EmpleadoDto,
+  CreateEmpleadoDto,
+  UpdateEmpleadoDto,
+  TiendaDto,
+  CreateTiendaDto,
+  UpdateTiendaDto,
+} from '../models';
 
 export interface Role {
   id: number;
   nombre: string;
-}
-
-export interface Tienda {
-  id: number;
-  nombre: string;
-  direccion: string;
-  estado: number; // BIT: 1 = Activo, 0 = Inactivo
-}
-
-export interface Empleado {
-  id: number;
-  nombre: string;
-  apellido: string;
-  correo: string;
-  cargo: string;
-  fechaIngreso: string;
-  estado: number; // BIT: 1 = Activo, 0 = Inactivo
-  tiendaId: number;
 }
 
 export interface Usuario {
@@ -39,65 +34,11 @@ export interface Usuario {
   providedIn: 'root',
 })
 export class DataService {
-  // Datos de prueba basados exactamente en el script SQL
+  // Signals para datos locales (roles y usuarios - no hay API aún)
   private rolesSignal = signal<Role[]>([
     { id: 1, nombre: 'Admin' },
     { id: 2, nombre: 'Manager' },
     { id: 3, nombre: 'Empleado' },
-  ]);
-
-  private tiendasSignal = signal<Tienda[]>([
-    {
-      id: 1,
-      nombre: 'Tienda Centro',
-      direccion: 'Av. Principal 123',
-      estado: 1,
-    },
-    {
-      id: 2,
-      nombre: 'Tienda Norte',
-      direccion: 'Calle 5 y Av. 8',
-      estado: 1,
-    },
-    {
-      id: 3,
-      nombre: 'Tienda Cerrada',
-      direccion: 'Vía Antigua S/N',
-      estado: 0,
-    },
-  ]);
-
-  private empleadosSignal = signal<Empleado[]>([
-    {
-      id: 1,
-      nombre: 'Ana',
-      apellido: 'Pérez',
-      correo: 'ana@demo.com',
-      cargo: 'Cajera',
-      fechaIngreso: '2024-01-10',
-      estado: 1,
-      tiendaId: 1,
-    },
-    {
-      id: 2,
-      nombre: 'Luis',
-      apellido: 'Mora',
-      correo: 'luis@demo.com',
-      cargo: 'Supervisor',
-      fechaIngreso: '2023-09-02',
-      estado: 1,
-      tiendaId: 1,
-    },
-    {
-      id: 3,
-      nombre: 'Marta',
-      apellido: 'Ríos',
-      correo: 'mrios@demo.com',
-      cargo: 'Bodega',
-      fechaIngreso: '2022-05-21',
-      estado: 0,
-      tiendaId: 3,
-    },
   ]);
 
   private usuariosSignal = signal<Usuario[]>([
@@ -130,28 +71,76 @@ export class DataService {
     },
   ]);
 
-  constructor(private http: HttpClient) {}
+  // Signals para datos de API
+  private empleadosFromApi = signal<EmpleadoDto[]>([]);
+  private tiendasFromApi = signal<TiendaDto[]>([]);
 
+  constructor(
+    private http: HttpClient,
+    private empleadoService: EmpleadoService,
+    private tiendaService: TiendaService,
+    private notificationService: NotificationService,
+    private errorHandler: ErrorHandlerService
+  ) {
+    // Cargar datos iniciales
+    this.loadInitialData();
+  }
+
+  // Computed properties
   get roles() {
     return this.rolesSignal.asReadonly();
-  }
-
-  get tiendas() {
-    return this.tiendasSignal.asReadonly();
-  }
-
-  get empleados() {
-    return this.empleadosSignal.asReadonly();
   }
 
   get usuarios() {
     return this.usuariosSignal.asReadonly();
   }
 
+  get empleados() {
+    return this.empleadosFromApi.asReadonly();
+  }
+
+  get tiendas() {
+    return this.tiendasFromApi.asReadonly();
+  }
+
+  // Cargar datos iniciales
+  private loadInitialData(): void {
+    forkJoin({
+      empleados: this.empleadoService.getAll().pipe(
+        catchError((error) => {
+          this.errorHandler.handleError(error);
+          return of([]);
+        })
+      ),
+      tiendas: this.tiendaService.getAll().pipe(
+        catchError((error) => {
+          this.errorHandler.handleError(error);
+          return of([]);
+        })
+      ),
+    }).subscribe({
+      next: ({ empleados, tiendas }) => {
+        this.empleadosFromApi.set(empleados);
+        this.tiendasFromApi.set(tiendas);
+        if (empleados.length > 0 && tiendas.length > 0) {
+          this.errorHandler.showInfo('Datos cargados correctamente');
+        }
+      },
+      error: (error) => {
+        this.errorHandler.handleError(error);
+      },
+    });
+  }
+
+  // Método público para recargar datos
+  refreshData(): void {
+    this.loadInitialData();
+  }
+
   // Funciones para obtener nombres
   getTiendaNombre(tiendaId: number): string {
     return (
-      this.tiendasSignal().find((tienda) => tienda.id === tiendaId)?.nombre ||
+      this.tiendasFromApi().find((tienda) => tienda.id === tiendaId)?.nombre ||
       'Sin asignar'
     );
   }
@@ -164,7 +153,7 @@ export class DataService {
 
   getEmpleadoNombre(empleadoId: number | null): string {
     if (!empleadoId) return 'Sin empleado';
-    const empleado = this.empleadosSignal().find(
+    const empleado = this.empleadosFromApi().find(
       (emp) => emp.id === empleadoId
     );
     return empleado
@@ -172,63 +161,93 @@ export class DataService {
       : 'Sin empleado';
   }
 
-  // Estadísticas (solo elementos activos - estado = 1)
+  // Estadísticas (solo elementos activos)
   getEstadisticas() {
     return {
-      totalTiendas: this.tiendasSignal().filter((t) => t.estado === 1).length,
-      totalEmpleados: this.empleadosSignal().filter((e) => e.estado === 1)
-        .length,
+      totalTiendas: this.tiendasFromApi().filter((t) => t.estado).length,
+      totalEmpleados: this.empleadosFromApi().filter((e) => e.estado).length,
       totalUsuarios: this.usuariosSignal().filter((u) => u.estado === 1).length,
       totalRoles: this.rolesSignal().length,
     };
   }
 
-  // Funciones CRUD para Tiendas
-  addTienda(tienda: Omit<Tienda, 'id'>): void {
-    const newTienda: Tienda = {
-      id: Math.max(...this.tiendasSignal().map((t) => t.id)) + 1,
-      ...tienda,
-    };
-    this.tiendasSignal.update((tiendas) => [...tiendas, newTienda]);
-  }
-
-  deleteTienda(id: number): void {
-    this.tiendasSignal.update((tiendas) =>
-      tiendas.map((tienda) =>
-        tienda.id === id ? { ...tienda, estado: 0 } : tienda
-      )
+  // CRUD para Tiendas (usando API)
+  addTienda(tienda: CreateTiendaDto): Observable<TiendaDto> {
+    return this.tiendaService.create(tienda).pipe(
+      tap((nuevaTienda) => {
+        this.tiendasFromApi.update((tiendas) => [...tiendas, nuevaTienda]);
+        this.notificationService.success('Tienda creada exitosamente');
+      }),
+      catchError((error) => {
+        this.notificationService.error('Error al crear la tienda');
+        throw error;
+      })
     );
   }
 
-  // Funciones CRUD para Empleados
-  addEmpleado(empleado: Omit<Empleado, 'id' | 'fechaIngreso'>): void {
-    const newEmpleado: Empleado = {
-      id: Math.max(...this.empleadosSignal().map((e) => e.id)) + 1,
-      fechaIngreso: new Date().toISOString().split('T')[0],
-      ...empleado,
-    };
-    this.empleadosSignal.update((empleados) => [...empleados, newEmpleado]);
-  }
-
-  deleteEmpleado(id: number): void {
-    this.empleadosSignal.update((empleados) =>
-      empleados.map((empleado) =>
-        empleado.id === id ? { ...empleado, estado: 0 } : empleado
-      )
+  deleteTienda(id: number): Observable<void> {
+    return this.tiendaService.delete(id).pipe(
+      tap(() => {
+        this.tiendasFromApi.update((tiendas) =>
+          tiendas.map((tienda) =>
+            tienda.id === id ? { ...tienda, estado: false } : tienda
+          )
+        );
+        this.notificationService.success('Tienda eliminada exitosamente');
+      }),
+      catchError((error) => {
+        this.notificationService.error('Error al eliminar la tienda');
+        throw error;
+      })
     );
   }
 
-  // Funciones CRUD para Usuarios
+  // CRUD para Empleados (usando API)
+  addEmpleado(empleado: CreateEmpleadoDto): Observable<EmpleadoDto> {
+    return this.empleadoService.create(empleado).pipe(
+      tap((nuevoEmpleado) => {
+        this.empleadosFromApi.update((empleados) => [
+          ...empleados,
+          nuevoEmpleado,
+        ]);
+        this.notificationService.success('Empleado creado exitosamente');
+      }),
+      catchError((error) => {
+        this.notificationService.error('Error al crear el empleado');
+        throw error;
+      })
+    );
+  }
+
+  deleteEmpleado(id: number): Observable<void> {
+    return this.empleadoService.delete(id).pipe(
+      tap(() => {
+        this.empleadosFromApi.update((empleados) =>
+          empleados.map((empleado) =>
+            empleado.id === id ? { ...empleado, estado: false } : empleado
+          )
+        );
+        this.notificationService.success('Empleado eliminado exitosamente');
+      }),
+      catchError((error) => {
+        this.notificationService.error('Error al eliminar el empleado');
+        throw error;
+      })
+    );
+  }
+
+  // CRUD para Usuarios (local - sin API aún)
   addUsuario(
     usuario: Omit<Usuario, 'id' | 'fechaCreado' | 'contrasenia'>
   ): void {
     const newUsuario: Usuario = {
       id: Math.max(...this.usuariosSignal().map((u) => u.id)) + 1,
       fechaCreado: new Date().toISOString().split('T')[0],
-      contrasenia: '********', // En producción, esto se hashearía
+      contrasenia: '********',
       ...usuario,
     };
     this.usuariosSignal.update((usuarios) => [...usuarios, newUsuario]);
+    this.notificationService.success('Usuario creado exitosamente');
   }
 
   deleteUsuario(id: number): void {
@@ -237,14 +256,16 @@ export class DataService {
         usuario.id === id ? { ...usuario, estado: 0 } : usuario
       )
     );
+    this.notificationService.success('Usuario eliminado exitosamente');
   }
 
-  // Funciones CRUD para Roles
+  // CRUD para Roles (local - sin API aún)
   addRole(role: Omit<Role, 'id'>): void {
     const newRole: Role = {
       id: Math.max(...this.rolesSignal().map((r) => r.id)) + 1,
       ...role,
     };
     this.rolesSignal.update((roles) => [...roles, newRole]);
+    this.notificationService.success('Rol creado exitosamente');
   }
 }

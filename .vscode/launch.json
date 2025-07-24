@@ -1,0 +1,30 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "🚀 Launch Backend (Web.API)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-backend",
+      "program": "${workspaceFolder}/backend/Web.API/bin/Debug/net8.0/Web.API.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/backend/Web.API",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/backend/Views"
+      }
+    },
+    {
+      "name": "🔗 Attach to .NET Process",
+      "type": "coreclr",
+      "request": "attach"
+    }
+  ]
+}

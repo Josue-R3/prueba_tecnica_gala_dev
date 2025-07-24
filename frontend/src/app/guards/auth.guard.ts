@@ -6,7 +6,7 @@ export function authGuard() {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.isAuthenticated()) {
+  if (authService.isAuthenticatedSync()) {
     return true;
   } else {
     router.navigate(['/login']);
@@ -18,7 +18,7 @@ export function loginGuard() {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.isAuthenticated()) {
+  if (authService.isAuthenticatedSync()) {
     router.navigate(['/dashboard']);
     return false;
   } else {

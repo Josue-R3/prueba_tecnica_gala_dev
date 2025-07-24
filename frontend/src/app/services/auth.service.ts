@@ -1,83 +1,61 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { isPlatformBrowser } from '@angular/common';
-import { PLATFORM_ID, Inject } from '@angular/core';
-import { Observable, of, delay } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
-export interface Role {
-  id: number;
-  nombre: string;
-}
-
-export interface Empleado {
-  id: number;
-  nombre: string;
-  apellido: string;
-  cargo: string;
-}
-
-export interface Usuario {
-  id: number;
+// Interfaces para autenticación
+export interface LoginRequest {
   usuario: string;
   contrasenia: string;
-  rolId: number;
-  empleadoId: number | null;
-  estado: number;
-  fechaCreado: string;
-  empleado: Empleado | null;
-  rol: Role;
 }
 
-// Datos de usuarios de prueba basados en el script SQL
-const testUsers: Usuario[] = [
-  {
-    id: 1,
-    usuario: 'admin',
-    contrasenia: 'Admin123',
-    rolId: 1,
-    empleadoId: null,
-    estado: 1,
-    fechaCreado: '2024-01-01',
-    empleado: null,
-    rol: { id: 1, nombre: 'Admin' },
-  },
-  {
-    id: 2,
-    usuario: 'manager',
-    contrasenia: 'Manager123',
-    rolId: 2,
-    empleadoId: null,
-    estado: 1,
-    fechaCreado: '2024-01-01',
-    empleado: null,
-    rol: { id: 2, nombre: 'Manager' },
-  },
-  {
-    id: 3,
-    usuario: 'ana.login',
-    contrasenia: 'Ana123',
-    rolId: 3,
-    empleadoId: 1,
-    estado: 1,
-    fechaCreado: '2024-01-10',
-    empleado: { id: 1, nombre: 'Ana', apellido: 'Pérez', cargo: 'Cajera' },
-    rol: { id: 3, nombre: 'Empleado' },
-  },
-];
+export interface LoginResponse {
+  success: boolean;
+  token?: string;
+  user?: AuthUser;
+  error?: string;
+}
+
+export interface AuthUser {
+  id: number;
+  usuario: string;
+  rolId: number;
+  empleadoId: number | null;
+  rol: {
+    id: number;
+    nombre: string;
+  };
+  empleado?: {
+    id: number;
+    nombre: string;
+    apellido: string;
+    cargo: string;
+  } | null;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private currentUserSignal = signal<Usuario | null>(null);
+  private readonly apiUrl = `${environment.apiUrl}/api/auth`;
+  private currentUserSubject = new BehaviorSubject<AuthUser | null>(null);
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+
+  private currentUserSignal = signal<AuthUser | null>(null);
   private isAuthenticatedSignal = signal<boolean>(false);
 
-  constructor(
-    private http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-    // Verificar si hay una sesión guardada al inicializar
-    this.checkStoredSession();
+  constructor(private http: HttpClient) {
+    // Verificar si hay un token almacenado al inicializar
+    this.checkStoredToken();
+  }
+
+  get currentUser$() {
+    return this.currentUserSubject.asObservable();
+  }
+
+  get isAuthenticated$() {
+    return this.isAuthenticatedSubject.asObservable();
   }
 
   get currentUser() {
@@ -88,93 +66,112 @@ export class AuthService {
     return this.isAuthenticatedSignal.asReadonly();
   }
 
-  private checkStoredSession() {
-    if (isPlatformBrowser(this.platformId)) {
-      const savedAuth = localStorage.getItem('isAuthenticated');
-      const savedUser = localStorage.getItem('currentUser');
+  login(usuario: string, contrasenia: string): Observable<LoginResponse> {
+    const credentials: LoginRequest = { usuario, contrasenia };
 
-      if (savedAuth === 'true' && savedUser) {
-        this.isAuthenticatedSignal.set(true);
-        this.currentUserSignal.set(JSON.parse(savedUser));
-      }
-    }
-  }
+    return this.http
+      .post<LoginResponse>(`${this.apiUrl}/login`, credentials)
+      .pipe(
+        tap((response) => {
+          if (response.success && response.token && response.user) {
+            // Guardar token y usuario
+            sessionStorage.setItem('authToken', response.token);
+            sessionStorage.setItem(
+              'currentUser',
+              JSON.stringify(response.user)
+            );
 
-  login(
-    usuario: string,
-    contrasenia: string
-  ): Observable<{ success: boolean; user?: Usuario; error?: string }> {
-    // Buscar usuario en los datos de prueba
-    const user = testUsers.find(
-      (u) =>
-        u.usuario === usuario && u.contrasenia === contrasenia && u.estado === 1
-    );
-
-    if (user) {
-      this.currentUserSignal.set(user);
-      this.isAuthenticatedSignal.set(true);
-      if (isPlatformBrowser(this.platformId)) {
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('currentUser', JSON.stringify(user));
-      }
-      return of({ success: true, user }).pipe(delay(1000));
-    } else {
-      return of({
-        success: false,
-        error: 'Usuario o contraseña incorrectos',
-      }).pipe(delay(1000));
-    }
-  }
-
-  // Método sincrónico para login (similar al proyecto de referencia)
-  loginSync(
-    usuario: string,
-    contrasenia: string
-  ): Promise<{ success: boolean; user?: Usuario; error?: string }> {
-    return new Promise((resolve) => {
-      // Simular delay
-      setTimeout(() => {
-        const user = testUsers.find(
-          (u) =>
-            u.usuario === usuario &&
-            u.contrasenia === contrasenia &&
-            u.estado === 1
-        );
-
-        if (user) {
-          this.currentUserSignal.set(user);
-          this.isAuthenticatedSignal.set(true);
-          if (isPlatformBrowser(this.platformId)) {
-            localStorage.setItem('isAuthenticated', 'true');
-            localStorage.setItem('currentUser', JSON.stringify(user));
+            // Actualizar estado
+            this.currentUserSubject.next(response.user);
+            this.isAuthenticatedSubject.next(true);
+            this.currentUserSignal.set(response.user);
+            this.isAuthenticatedSignal.set(true);
           }
-          resolve({ success: true, user });
-        } else {
+        }),
+        catchError((error) => {
+          console.error('Error en login:', error);
+          return of({
+            success: false,
+            error: error.error?.error || 'Error de conexión con el servidor',
+          });
+        })
+      );
+  }
+
+  // Método sincrónico para compatibilidad
+  async loginSync(
+    usuario: string,
+    contrasenia: string
+  ): Promise<{ success: boolean; user?: AuthUser; error?: string }> {
+    return new Promise((resolve) => {
+      this.login(usuario, contrasenia).subscribe({
+        next: (response) =>
+          resolve({
+            success: response.success,
+            user: response.user,
+            error: response.error,
+          }),
+        error: (error) =>
           resolve({
             success: false,
-            error: 'Usuario o contraseña incorrectos',
-          });
-        }
-      }, 1000);
+            error: error.message || 'Error de conexión',
+          }),
+      });
     });
   }
 
   logout(): void {
+    // Limpiar almacenamiento
+    sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('currentUser');
+
+    // Actualizar estado
+    this.currentUserSubject.next(null);
+    this.isAuthenticatedSubject.next(false);
     this.currentUserSignal.set(null);
     this.isAuthenticatedSignal.set(false);
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('isAuthenticated');
-      localStorage.removeItem('currentUser');
+  }
+
+  // Verificar token almacenado
+  private checkStoredToken(): void {
+    const token = sessionStorage.getItem('authToken');
+    const userStr = sessionStorage.getItem('currentUser');
+
+    if (token && userStr) {
+      try {
+        const user = JSON.parse(userStr) as AuthUser;
+        this.currentUserSubject.next(user);
+        this.isAuthenticatedSubject.next(true);
+        this.currentUserSignal.set(user);
+        this.isAuthenticatedSignal.set(true);
+      } catch (error) {
+        console.error('Error parsing stored user:', error);
+        this.logout();
+      }
     }
   }
 
-  getTestCredentials(userType: 'admin' | 'manager' | 'empleado') {
-    const testCreds = {
+  // Obtener token para requests
+  getToken(): string | null {
+    return sessionStorage.getItem('authToken');
+  }
+
+  // Verificar si está autenticado (sincrónico)
+  isAuthenticatedSync(): boolean {
+    return this.isAuthenticatedSubject.value;
+  }
+
+  // Método para obtener credenciales de prueba (solo para referencia)
+  getTestCredentials(userType: 'admin' | 'manager' | 'empleado'): {
+    usuario: string;
+    contrasenia: string;
+  } {
+    const credentials = {
       admin: { usuario: 'admin', contrasenia: 'Admin123' },
       manager: { usuario: 'manager', contrasenia: 'Manager123' },
       empleado: { usuario: 'ana.login', contrasenia: 'Ana123' },
     };
 
-    return testCreds[userType];
+    return credentials[userType];
   }
 }

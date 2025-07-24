@@ -46,4 +46,12 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
 
         return await query.AnyAsync();
     }
+
+    public async Task<Usuario?> GetByUsernameAsync(string username)
+    {
+        return await _dbSet
+            .Include(u => u.Rol)
+            .Include(u => u.Empleado)
+            .FirstOrDefaultAsync(u => u.UsuarioName.ToLower() == username.ToLower() && u.Estado);
+    }
 }

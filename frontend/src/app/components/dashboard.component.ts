@@ -20,13 +20,13 @@ import {
   faShieldAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../services/auth.service';
+import { DataService, Role, Usuario } from '../services/data.service';
 import {
-  DataService,
-  Tienda,
-  Empleado,
-  Usuario,
-  Role,
-} from '../services/data.service';
+  CreateEmpleadoDto,
+  CreateTiendaDto,
+  EmpleadoDto,
+  TiendaDto,
+} from '../models';
 
 @Component({
   selector: 'app-dashboard',
@@ -122,7 +122,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     // Si no está autenticado, redirigir al login
-    if (!this.authService.isAuthenticated()) {
+    if (!this.authService.isAuthenticatedSync()) {
       this.router.navigate(['/login']);
     }
   }
@@ -151,7 +151,7 @@ export class DashboardComponent implements OnInit {
   // Métodos auxiliares para filtros
   getEmpleadosCountByTienda(tiendaId: number): number {
     return this.empleados().filter(
-      (e) => e.tiendaId === tiendaId && e.estado === 1
+      (e) => e.tiendaId === tiendaId && e.estado === true
     ).length;
   }
 
@@ -220,9 +220,20 @@ export class DashboardComponent implements OnInit {
   handleAddTienda() {
     const tienda = this.newTienda();
     if (tienda.nombre && tienda.direccion) {
-      this.dataService.addTienda(tienda);
-      this.newTienda.set({ nombre: '', direccion: '', estado: 1 });
-      this.isTiendaModalOpen.set(false);
+      const createTiendaDto: CreateTiendaDto = {
+        nombre: tienda.nombre,
+        direccion: tienda.direccion,
+      };
+
+      this.dataService.addTienda(createTiendaDto).subscribe({
+        next: () => {
+          this.newTienda.set({ nombre: '', direccion: '', estado: 1 });
+          this.isTiendaModalOpen.set(false);
+        },
+        error: (error) => {
+          console.error('Error al crear tienda:', error);
+        },
+      });
     }
   }
 
@@ -235,16 +246,31 @@ export class DashboardComponent implements OnInit {
       empleado.cargo &&
       empleado.tiendaId
     ) {
-      this.dataService.addEmpleado(empleado);
-      this.newEmpleado.set({
-        nombre: '',
-        apellido: '',
-        correo: '',
-        cargo: '',
-        tiendaId: 0,
-        estado: 1,
+      const createEmpleadoDto: CreateEmpleadoDto = {
+        nombre: empleado.nombre,
+        apellido: empleado.apellido,
+        correo: empleado.correo,
+        cargo: empleado.cargo,
+        tiendaId: empleado.tiendaId,
+        fechaIngreso: new Date().toISOString(),
+      };
+
+      this.dataService.addEmpleado(createEmpleadoDto).subscribe({
+        next: () => {
+          this.newEmpleado.set({
+            nombre: '',
+            apellido: '',
+            correo: '',
+            cargo: '',
+            tiendaId: 0,
+            estado: 1,
+          });
+          this.isEmpleadoModalOpen.set(false);
+        },
+        error: (error) => {
+          console.error('Error al crear empleado:', error);
+        },
       });
-      this.isEmpleadoModalOpen.set(false);
     }
   }
 
@@ -279,11 +305,25 @@ export class DashboardComponent implements OnInit {
 
   // Funciones para "eliminar" (cambiar estado a 0)
   handleDeleteTienda(id: number) {
-    this.dataService.deleteTienda(id);
+    this.dataService.deleteTienda(id).subscribe({
+      next: () => {
+        // La actualización se maneja en el servicio
+      },
+      error: (error) => {
+        console.error('Error al eliminar tienda:', error);
+      },
+    });
   }
 
   handleDeleteEmpleado(id: number) {
-    this.dataService.deleteEmpleado(id);
+    this.dataService.deleteEmpleado(id).subscribe({
+      next: () => {
+        // La actualización se maneja en el servicio
+      },
+      error: (error) => {
+        console.error('Error al eliminar empleado:', error);
+      },
+    });
   }
 
   handleDeleteUsuario(id: number) {
@@ -314,11 +354,11 @@ export class DashboardComponent implements OnInit {
 
   // Función para filtrar datos activos
   getActiveTiendas() {
-    return this.tiendas().filter((t) => t.estado === 1);
+    return this.tiendas().filter((t) => t.estado === true);
   }
 
   getActiveEmpleados() {
-    return this.empleados().filter((e) => e.estado === 1);
+    return this.empleados().filter((e) => e.estado === true);
   }
 
   getActiveUsuarios() {
@@ -326,10 +366,10 @@ export class DashboardComponent implements OnInit {
   }
 
   getActiveTiendasForSelect() {
-    return this.tiendas().filter((t) => t.estado === 1);
+    return this.tiendas().filter((t) => t.estado === true);
   }
 
   getActiveEmpleadosForSelect() {
-    return this.empleados().filter((e) => e.estado === 1);
+    return this.empleados().filter((e) => e.estado === true);
   }
 }

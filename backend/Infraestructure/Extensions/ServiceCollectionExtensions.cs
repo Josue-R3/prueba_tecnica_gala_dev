@@ -1,5 +1,6 @@
 using Domain.Interfaces;
 using Infrastructure.Data;
+using Infrastructure.Repositories;
 using Infrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,11 @@ public static class ServiceCollectionExtensions
         // Entity Framework
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+        // Repositories
+        services.AddScoped<IEmpleadoRepository, EmpleadoRepository>();
+        services.AddScoped<ITiendaRepository, TiendaRepository>();
+        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
         // Unit of Work
         services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
