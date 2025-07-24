@@ -1,3 +1,152 @@
+# Sistema de Gestión de Empleados y Tiendas
+
+Sistema fullstack desarrollado con Angular 19+ (frontend) y .NET 8 (backend) para gestión de empleados y tiendas con funcionalidades CRUD completas.
+
+## 🏗️ Arquitectura del Proyecto
+
+```
+prueba_tecnica_gala_dev/
+├── backend/                 # API en .NET 8
+│   ├── Domain/             # Entidades y interfaces
+│   ├── Application/        # Lógica de negocio, DTOs, servicios
+│   ├── Infrastructure/     # Repositorios, Entity Framework
+│   ├── Web.API/           # Controladores y configuración API
+│   └── README.md          # Documentación específica del backend
+├── frontend/              # Frontend en Angular 19+
+│   └── src/app/          # Componentes, servicios, guards
+├── db/                   # Base de datos SQL Server con Docker
+│   ├── docker-compose.yml
+│   └── scripts/init.sql  # Script de inicialización
+└── docs/                 # Documentación
+```
+
+## 🚀 Inicio Rápido
+
+### 1. Base de Datos
+```bash
+cd db
+docker-compose up -d
+```
+
+### 2. Backend (.NET 8 API)
+```bash
+cd backend
+dotnet build
+cd Web.API
+dotnet run
+```
+La API estará disponible en: `https://localhost:7167/swagger`
+
+### 3. Frontend (Angular 19+)
+```bash
+cd frontend
+npm install
+ng serve
+```
+La aplicación estará disponible en: `http://localhost:4200`
+
+## ✨ Funcionalidades Implementadas
+
+### Backend (API RESTful)
+- ✅ **CRUD Empleados**: Crear, leer, actualizar, eliminar empleados
+- ✅ **CRUD Tiendas**: Gestión completa de tiendas
+- ✅ **Búsqueda**: Por nombre o correo en empleados
+- ✅ **Paginación**: Listado paginado de empleados
+- ✅ **Validaciones**: FluentValidation para todos los DTOs
+- ✅ **Manejo de Errores**: Middleware global de excepciones
+- ✅ **Soft Delete**: Los registros se marcan como inactivos
+- ✅ **CORS**: Configurado para el frontend Angular
+- ✅ **Swagger**: Documentación interactiva de la API
+
+### Frontend (Angular 19+)
+- ✅ **Formularios Reactivos**: Con validaciones completas
+- ✅ **Componentes Modulares**: Arquitectura limpia y reutilizable
+- ✅ **Guards**: Protección de rutas
+- ✅ **Servicios HTTP**: Interceptores para manejo centralizado
+- ✅ **DTOs**: Tipado fuerte con TypeScript
+- ✅ **Manejo de Errores**: Centralizado en servicios
+
+### Base de Datos
+- ✅ **SQL Server**: Containerizada con Docker
+- ✅ **Relaciones**: Entre empleados, tiendas, usuarios y roles
+- ✅ **Índices**: Para optimización de consultas
+- ✅ **Datos de Prueba**: Incluidos en el script de inicialización
+
+## 🛠️ Tecnologías Utilizadas
+
+### Backend
+- **.NET 8**: Framework principal
+- **Entity Framework Core**: ORM
+- **AutoMapper**: Mapeo de objetos
+- **FluentValidation**: Validaciones
+- **Swagger/OpenAPI**: Documentación
+- **SQL Server**: Base de datos
+
+### Frontend
+- **Angular 19+**: Framework principal
+- **TypeScript**: Lenguaje de programación
+- **Reactive Forms**: Formularios reactivos
+- **HttpClient**: Cliente HTTP
+- **Guards**: Protección de rutas
+
+### Infraestructura
+- **Docker**: Containerización de SQL Server
+- **Git**: Control de versiones
+
+## 📋 Requisitos Cumplidos
+
+### Backend (.NET - C#) ✅
+- [x] API RESTful usando .NET 8
+- [x] Arquitectura modular (Domain, Application, Infrastructure, API)
+- [x] Base de datos SQL Server con Entity Framework Core
+- [x] Manejo de excepciones y validaciones
+- [x] DTOs y mapeo con AutoMapper
+- [x] Repository Pattern y separación de responsabilidades
+
+### Frontend (Angular 19+) ✅
+- [x] CRUD de empleados con formularios reactivos
+- [x] Validaciones en formularios
+- [x] Listado con opciones de editar/eliminar
+- [x] Consumo del backend con HttpClient
+- [x] Interceptor para evitar duplicación de código
+- [x] Manejo de errores centralizado
+- [x] DTOs definidos
+- [x] Guards implementados
+- [x] Buscador en listado de empleados
+- [x] Paginación en listado
+- [x] Servicio de notificaciones para mensajes
+
+### Adicionales ✅
+- [x] Arquitectura por capas bien definida
+- [x] Código limpio y buenas prácticas
+- [x] Control de versiones con Git
+- [x] Documentación completa
+- [x] Docker para base de datos
+
+## 👥 Datos de Prueba
+
+La base de datos incluye datos de ejemplo:
+
+### Tiendas
+- Tienda Centro (Activa)
+- Tienda Norte (Activa)  
+- Tienda Cerrada (Inactiva)
+
+### Empleados
+- Ana Pérez (ana@demo.com) - Cajera
+- Luis Mora (luis@demo.com) - Supervisor
+- Marta Ríos (mrios@demo.com) - Bodega (Inactiva)
+
+### Usuarios
+- admin/Admin123 (Rol: Admin)
+- manager/Manager123 (Rol: Manager)
+- ana.login/Ana123 (Rol: Empleado)
+
+## � Documentación Adicional
+
+- [Backend API Documentation](./backend/README.md)
+- [Database Schema](./docs/database.png)
+
 Para levantar el contendor de la base de datos
 
 - docker compose up -d
@@ -5,48 +154,6 @@ Para levantar el contendor de la base de datos
 Para reiniciarlo
 
 - docker compose down -v
-
-
-
-# Sistema de Gestión de Tiendas - Frontend
-
-Este es un proyecto Angular que implementa un sistema de gestión de tiendas con autenticación y manejo de empleados.
-
-## 📁 Estructura del Proyecto (Solo archivos importantes)
-
-```
-frontend/src/
-├── app/
-│   ├── components/           # Componentes de la aplicación
-│   │   ├── login.component.*     # Pantalla de login
-│   │   └── dashboard.component.* # Panel principal
-│   ├── services/            # Servicios de datos
-│   │   ├── auth.service.ts      # Manejo de autenticación
-│   │   └── data.service.ts      # Manejo de datos (tiendas, empleados, etc.)
-│   ├── guards/              # Guards de protección de rutas
-│   │   └── auth.guard.ts        # Protección de rutas autenticadas
-│   ├── app.routes.ts        # Configuración de rutas
-│   ├── app.config.ts        # Configuración principal
-│   └── app.ts              # Componente raíz
-├── index.html              # Página principal
-├── main.ts                 # Punto de entrada
-└── styles.css             # Estilos globales
-```
-
-## 🚀 Comandos Principales
-
-```bash
-# Instalar dependencias
-npm install
-
-# Ejecutar en desarrollo
-ng serve
-
-# Compilar para producción
-ng build
-```
-
-## 👥 Usuarios de Prueba
 
 - **Administrador**: admin / Admin123
 - **Manager**: manager / Manager123  

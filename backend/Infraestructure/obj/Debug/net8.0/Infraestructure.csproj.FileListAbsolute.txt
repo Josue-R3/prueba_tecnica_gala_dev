@@ -52,3 +52,5 @@ C:\Users\JOSUERICARDORUIZROSA\Documents\GitHub\prueba_tecnica_gala_dev\backend\I
 C:\Users\JOSUERICARDORUIZROSA\Documents\GitHub\prueba_tecnica_gala_dev\backend\Infraestructure\obj\Debug\net8.0\refint\Infraestructure.dll
 C:\Users\JOSUERICARDORUIZROSA\Documents\GitHub\prueba_tecnica_gala_dev\backend\Infraestructure\obj\Debug\net8.0\Infraestructure.pdb
 C:\Users\JOSUERICARDORUIZROSA\Documents\GitHub\prueba_tecnica_gala_dev\backend\Infraestructure\obj\Debug\net8.0\ref\Infraestructure.dll
+D:\JOSUE DATOS\Documentos\GitHub\prueba_tecnica_gala_dev\backend\Infraestructure\bin\Debug\net8.0\Infraestructure.runtimeconfig.json
+D:\JOSUE DATOS\Documentos\GitHub\prueba_tecnica_gala_dev\backend\Infraestructure\obj\Debug\net8.0\Infraestructure.genruntimeconfig.cache
